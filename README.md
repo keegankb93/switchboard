@@ -109,7 +109,7 @@ end
 
 ### Event-level guards
 
-An event-level guard gates the whole event and if it fails, no transition is considered.
+An event-level guard gates the whole event and if it fails, no transition is ran.
 
 ```ruby
 event :calm, if: :safe? do
