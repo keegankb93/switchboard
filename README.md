@@ -134,6 +134,7 @@ enter/exit where event callbacks fire before/after the whole event.
 
 >[!NOTE]
 >This is where the main deviation in the DSL comes into play. Rather than keyword args in (AASM) they are methods within a block.
+>The main reason for this is keyword polution can kind of get messy when you have guards + hooks etc. all in the keywords
 
 ### State hooks
 
