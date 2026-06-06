@@ -1,4 +1,6 @@
 module Switchboard
+  #
+  # Represents an event which holds references to the transitions that the event performs
   class Event
     include Hookable
 
@@ -7,6 +9,7 @@ module Switchboard
     def initialize(name, guard: Guard.new)
       @name = name
       @transitions = []
+      @transitions_by_from = {}
       @guard = guard
     end
 
@@ -21,11 +24,19 @@ module Switchboard
     # @option kwargs [Symbol, Proc] :unless The condition to evaluate before transitioning.
     # @return [void]
     def transition(from:, to:, **kwargs)
-      @transitions << Transition.new(
-        from: Array(from),
+      normalized_from = Array(from)
+
+      transition = Transition.new(
+        from: normalized_from,
         to: to,
         guard: Guard.new(if_cond: kwargs[:if], unless_cond: kwargs[:unless])
       )
+
+      @transitions << transition
+
+      normalized_from.each do |state|
+        (@transitions_by_from[state] ||= []) << transition
+      end
     end
 
     #
@@ -37,7 +48,11 @@ module Switchboard
     #
     # Returns the transition for the given state, if one exists.
     def transition_for(subject, state)
-      @transitions.find { |t| t.eligible?(subject, state) }
+      transitions_by_from = @transitions_by_from[state]
+
+      return nil unless transitions_by_from
+
+      transitions_by_from.find { |t| t.eligible?(subject, state) }
     end
 
     # Available event hooks

@@ -92,22 +92,21 @@ module Switchboard
 
       return false unless transition
 
-      # We need to keep track of both old state and new state so that
-      # callbacks can operate on their respective states.
-      old_state = @states[from]
-      new_state = @states[transition.to]
-
-      transition_context = { event: event, old_state: old_state, new_state: new_state }
-
-      Hookable::ORDER.each do |step|
-        run_all(subject, transition_context[step[:owner]], step[:hook])
-
-        next unless step[:hook] == Hookable::STATE_CHANGE_AFTER
-
-        subject.instance_variable_set(:@current_state, transition.to)
-      end
+      run_hooks(subject, transition, event, @states[from], @states[transition.to])
 
       true
+    end
+
+    def run_hooks(subject, transition, event, old_state, new_state)
+      run_all(subject, event, :before)
+      run_all(subject, old_state, :before_exit)
+      run_all(subject, old_state, :after_exit)
+
+      subject.instance_variable_set(:@current_state, transition.to)
+
+      run_all(subject, new_state, :before_enter)
+      run_all(subject, new_state, :after_enter)
+      run_all(subject, event, :after)
     rescue StandardError => e
       raise Switchboard::Errors::EventFireError, e
     end
