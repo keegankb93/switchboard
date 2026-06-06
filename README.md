@@ -195,8 +195,7 @@ end
 
 For the callable-object form, prefer a module with `self.call` for stateless
 hooks. An instance (`SomeClass.new`) also works if you need the object to
-carry state across transitions, though for game entities that state usually
-belongs on the object itself, reached via a symbol callback.
+carry state across transitions, which should be a rare scenario.
 
 ### Firing order
 
