@@ -5,7 +5,7 @@ A simple state machine library for DragonRuby that is based on the [AASM](https:
 >[!NOTE]
 > I've used AASM in my professional career and when working in DragonRuby I found myself thinking about the DSL AASM provided and how it would be a good fit in DragonRuby. Switchboard borrows AASM's DSL, but a minimal implementation built for DragonRuby as AASM is built for Rails/ActiveRecord, that being said it is not an exact 1:1 DSL.
 
->[!CAUTION]
+>[!WARNING]
 > While I did write some "tests" to try and test all the features this still hasn't be put to the..test..so you may encounter some bugs
 > please open up an issue or a PR!
 
