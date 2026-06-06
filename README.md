@@ -97,7 +97,7 @@ If both `low_health?` and `sees_player?` are true, the enemy flees, because
 
 Guards conditionally allow or block a transition or an entire event. Use
 `if:` (must be truthy) and `unless:` (must be falsey). A guard may be a symbol
-(method name on the object), a proc, or an array of those (all must pass).
+(method name on the subject/object the state machine belongs to), a proc, or an array of those (all must pass).
 
 ### Per-transition guards
 
