@@ -211,7 +211,7 @@ new state   after_enter
 event       after
 ```
 
-Anything up to and including `after_exit` sees the **old** state; everything
+Anything up to and including `after_exit` sees the **old** state and everything
 after sees the **new** state. So `before_exit`/`after_exit` run while still in
 the source state, and `before_enter`/`after_enter` run once the machine has
 switched.
