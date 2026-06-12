@@ -76,6 +76,12 @@ module Switchboard
       klass.define_method(:current_state) do
         @current_state ||= initial
       end
+
+      #
+      # Track when the state is entered
+      klass.define_method(:state_entered_at) do
+        @state_entered_at
+      end
     end
 
     #
@@ -105,6 +111,9 @@ module Switchboard
       subject.instance_variable_set(:@current_state, transition.to)
 
       run_all(subject, new_state, :before_enter)
+
+      subject.instance_variable_set(:@state_entered_at, Kernel.tick_count)
+
       run_all(subject, new_state, :after_enter)
       run_all(subject, event, :after)
     rescue StandardError => e
